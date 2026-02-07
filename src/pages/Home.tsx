@@ -47,8 +47,8 @@ export function Home() {
     <div>
       {/* Hero Section */}
       <section className="relative h-[600px] flex items-center justify-center overflow-hidden">
-        <ImageWithFallback
-          src="https://images.unsplash.com/photo-1593536488177-1eb3c2d4e3d2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjYWZlJTIwaW50ZXJpb3IlMjBjb3p5fGVufDF8fHx8MTc3MDM4ODMyOHww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
+        <img
+          src="/hero/hero1.jpg"
           alt="Big Tree Cafe Interior"
           className="absolute inset-0 w-full h-full object-cover"
         />
