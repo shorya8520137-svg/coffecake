@@ -1,10 +1,11 @@
 import { Link } from 'react-router';
-import { ArrowRight, Coffee, UtensilsCrossed, Clock, Star } from 'lucide-react';
+import { ArrowRight, Coffee, UtensilsCrossed, Clock, Star, ChevronLeft, ChevronRight } from 'lucide-react';
 import { ImageWithFallback } from '../components/figma/ImageWithFallback';
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '../components/ui/carousel';
-import Autoplay from 'embla-carousel-autoplay';
+import { useState, useEffect } from 'react';
 
 export function Home() {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  
   const heroSlides = [
     {
       image: '/hero/hero1.jpg',
@@ -19,6 +20,22 @@ export function Home() {
       buttonText: 'Explore Menu',
     },
   ];
+
+  // Auto-slide every 5 seconds
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
+  };
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + heroSlides.length) % heroSlides.length);
+  };
   const promotions = [
     {
       title: 'Happy Hour',
@@ -63,49 +80,61 @@ export function Home() {
     <div>
       {/* Hero Section - Simple Slider */}
       <section className="relative h-[600px] overflow-hidden">
-        <Carousel
-          opts={{
-            align: 'start',
-            loop: true,
-          }}
-          plugins={[
-            Autoplay({
-              delay: 5000,
-            }),
-          ]}
-          className="w-full h-full"
+        {/* Display only the current slide */}
+        <div className="relative h-full w-full">
+          <img
+            src={heroSlides[currentSlide].image}
+            alt={heroSlides[currentSlide].title}
+            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/50 to-black/60" />
+          <div className="relative z-10 h-full flex items-center justify-center">
+            <div className="text-center text-white px-4 max-w-5xl">
+              <h1 className="text-6xl md:text-7xl lg:text-8xl font-extrabold mb-6 tracking-tight leading-tight drop-shadow-2xl">
+                {heroSlides[currentSlide].title}
+              </h1>
+              <p className="text-2xl md:text-3xl mb-10 font-light tracking-wide drop-shadow-lg opacity-95">
+                {heroSlides[currentSlide].subtitle}
+              </p>
+              <Link
+                to="/menu"
+                className="inline-flex items-center gap-3 bg-white text-black hover:bg-black hover:text-white border-2 border-white px-12 py-5 rounded-full text-xl font-bold uppercase tracking-wider transition-all duration-300 hover:scale-105 shadow-2xl"
+              >
+                {heroSlides[currentSlide].buttonText} <ArrowRight className="w-6 h-6" />
+              </Link>
+            </div>
+          </div>
+        </div>
+
+        {/* Navigation Arrows */}
+        <button
+          onClick={prevSlide}
+          className="absolute left-6 top-1/2 -translate-y-1/2 z-20 bg-white/90 hover:bg-white p-3 rounded-full transition-all hover:scale-110 shadow-xl"
+          aria-label="Previous slide"
         >
-          <CarouselContent className="h-[600px]">
-            {heroSlides.map((slide, index) => (
-              <CarouselItem key={index} className="h-[600px]">
-                <div className="relative h-full flex items-center justify-center">
-                  <img
-                    src={slide.image}
-                    alt={slide.title}
-                    className="absolute inset-0 w-full h-full object-cover"
-                  />
-                  <div className="absolute inset-0 bg-black/50" />
-                  <div className="relative z-10 text-center text-white px-4 max-w-4xl">
-                    <h1 className="text-5xl md:text-6xl font-bold mb-6">
-                      {slide.title}
-                    </h1>
-                    <p className="text-xl md:text-2xl mb-8">
-                      {slide.subtitle}
-                    </p>
-                    <Link
-                      to="/menu"
-                      className="inline-flex items-center gap-2 bg-white text-black hover:bg-gray-100 px-8 py-3 rounded-lg transition-colors font-semibold"
-                    >
-                      {slide.buttonText} <ArrowRight className="w-5 h-5" />
-                    </Link>
-                  </div>
-                </div>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          <CarouselPrevious className="left-4 bg-white/80 hover:bg-white" />
-          <CarouselNext className="right-4 bg-white/80 hover:bg-white" />
-        </Carousel>
+          <ChevronLeft className="w-7 h-7 text-black" />
+        </button>
+        <button
+          onClick={nextSlide}
+          className="absolute right-6 top-1/2 -translate-y-1/2 z-20 bg-white/90 hover:bg-white p-3 rounded-full transition-all hover:scale-110 shadow-xl"
+          aria-label="Next slide"
+        >
+          <ChevronRight className="w-7 h-7 text-black" />
+        </button>
+
+        {/* Slide Indicators */}
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex gap-3">
+          {heroSlides.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => setCurrentSlide(index)}
+              className={`h-3 rounded-full transition-all ${
+                index === currentSlide ? 'bg-white w-12' : 'bg-white/60 w-3 hover:bg-white/80'
+              }`}
+              aria-label={`Go to slide ${index + 1}`}
+            />
+          ))}
+        </div>
       </section>
 
       {/* Promotions Section */}
