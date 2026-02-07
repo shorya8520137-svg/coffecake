@@ -7,16 +7,14 @@ import Autoplay from 'embla-carousel-autoplay';
 export function Home() {
   const heroSlides = [
     {
-      image: '/hero/hero1.jpg',
-      title: 'Welcome to Big Tree Cafe',
-      subtitle: 'Experience flavors from around the world in our cozy atmosphere',
-      buttonText: 'View Our Menu',
-    },
-    {
-      image: '/hero/minhero2.jpg',
-      title: 'Spice that hits different.',
-      subtitle: 'Discover bold flavors and authentic taste',
-      buttonText: 'Explore Menu',
+      leftImage: '/hero/hero1.jpg',
+      rightImage: '/hero/heromenu.png',
+      leftTitle: 'Welcome to Big Tree Cafe',
+      leftSubtitle: 'Experience flavors from around the world in our cozy atmosphere',
+      leftButton: 'View Our Menu',
+      rightTitle: 'Spice that hits different.',
+      rightSubtitle: 'Discover bold flavors and authentic taste',
+      rightButton: 'Explore Menu',
     },
   ];
   const promotions = [
@@ -61,7 +59,7 @@ export function Home() {
 
   return (
     <div>
-      {/* Hero Section with Slider */}
+      {/* Hero Section with Split Screen Slider */}
       <section className="relative h-[600px] overflow-hidden">
         <Carousel
           opts={{
@@ -78,26 +76,53 @@ export function Home() {
           <CarouselContent className="h-[600px]">
             {heroSlides.map((slide, index) => (
               <CarouselItem key={index} className="h-[600px]">
-                <div className="relative h-full flex items-center justify-center">
-                  <img
-                    src={slide.image}
-                    alt={slide.title}
-                    className="absolute inset-0 w-full h-full object-cover"
-                  />
-                  <div className="absolute inset-0 bg-black/60" />
-                  <div className="relative z-10 text-center text-white px-4 max-w-4xl">
-                    <h1 className="text-5xl md:text-6xl font-bold mb-6">
-                      {slide.title}
-                    </h1>
-                    <p className="text-xl md:text-2xl mb-8">
-                      {slide.subtitle}
-                    </p>
-                    <Link
-                      to="/menu"
-                      className="inline-flex items-center gap-2 bg-white text-black hover:bg-gray-100 px-8 py-3 rounded-lg transition-colors font-semibold"
-                    >
-                      {slide.buttonText} <ArrowRight className="w-5 h-5" />
-                    </Link>
+                <div className="relative h-full flex">
+                  {/* Left Side */}
+                  <div className="relative w-1/2 h-full flex items-center justify-center">
+                    <img
+                      src={slide.leftImage}
+                      alt={slide.leftTitle}
+                      className="absolute inset-0 w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-black/50" />
+                    <div className="relative z-10 text-center text-white px-8 max-w-xl">
+                      <h1 className="text-4xl md:text-5xl font-bold mb-4">
+                        {slide.leftTitle}
+                      </h1>
+                      <p className="text-lg md:text-xl mb-6">
+                        {slide.leftSubtitle}
+                      </p>
+                      <Link
+                        to="/menu"
+                        className="inline-flex items-center gap-2 bg-white text-black hover:bg-gray-100 px-6 py-3 rounded-lg transition-colors font-semibold"
+                      >
+                        {slide.leftButton} <ArrowRight className="w-5 h-5" />
+                      </Link>
+                    </div>
+                  </div>
+
+                  {/* Right Side */}
+                  <div className="relative w-1/2 h-full flex items-center justify-center">
+                    <img
+                      src={slide.rightImage}
+                      alt={slide.rightTitle}
+                      className="absolute inset-0 w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-black/50" />
+                    <div className="relative z-10 text-center text-white px-8 max-w-xl">
+                      <h1 className="text-4xl md:text-5xl font-bold mb-4">
+                        {slide.rightTitle}
+                      </h1>
+                      <p className="text-lg md:text-xl mb-6">
+                        {slide.rightSubtitle}
+                      </p>
+                      <Link
+                        to="/menu"
+                        className="inline-flex items-center gap-2 bg-white text-black hover:bg-gray-100 px-6 py-3 rounded-lg transition-colors font-semibold"
+                      >
+                        {slide.rightButton} <ArrowRight className="w-5 h-5" />
+                      </Link>
+                    </div>
                   </div>
                 </div>
               </CarouselItem>
