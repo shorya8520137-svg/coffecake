@@ -1,8 +1,24 @@
 import { Link } from 'react-router';
 import { ArrowRight, Coffee, UtensilsCrossed, Clock, Star } from 'lucide-react';
 import { ImageWithFallback } from '../components/figma/ImageWithFallback';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '../components/ui/carousel';
+import Autoplay from 'embla-carousel-autoplay';
 
 export function Home() {
+  const heroSlides = [
+    {
+      image: '/hero/hero1.jpg',
+      title: 'Welcome to Big Tree Cafe',
+      subtitle: 'Experience flavors from around the world in our cozy atmosphere',
+      buttonText: 'View Our Menu',
+    },
+    {
+      image: '/hero/minhero2.jpg',
+      title: 'Spice that hits different.',
+      subtitle: 'Discover bold flavors and authentic taste',
+      buttonText: 'Explore Menu',
+    },
+  ];
   const promotions = [
     {
       title: 'Happy Hour',
@@ -45,28 +61,51 @@ export function Home() {
 
   return (
     <div>
-      {/* Hero Section */}
-      <section className="relative h-[600px] flex items-center justify-center overflow-hidden">
-        <img
-          src="/hero/hero1.jpg"
-          alt="Big Tree Cafe Interior"
-          className="absolute inset-0 w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-black/60" />
-        <div className="relative z-10 text-center text-white px-4 max-w-4xl">
-          <h1 className="text-5xl md:text-6xl mb-6">
-            Welcome to Big Tree Cafe
-          </h1>
-          <p className="text-xl md:text-2xl mb-8">
-            Experience flavors from around the world in our cozy atmosphere
-          </p>
-          <Link
-            to="/menu"
-            className="inline-flex items-center gap-2 bg-white text-black hover:bg-gray-100 px-8 py-3 rounded-lg transition-colors"
-          >
-            View Our Menu <ArrowRight className="w-5 h-5" />
-          </Link>
-        </div>
+      {/* Hero Section with Slider */}
+      <section className="relative h-[600px] overflow-hidden">
+        <Carousel
+          opts={{
+            align: 'start',
+            loop: true,
+          }}
+          plugins={[
+            Autoplay({
+              delay: 5000,
+            }),
+          ]}
+          className="w-full h-full"
+        >
+          <CarouselContent className="h-[600px]">
+            {heroSlides.map((slide, index) => (
+              <CarouselItem key={index} className="h-[600px]">
+                <div className="relative h-full flex items-center justify-center">
+                  <img
+                    src={slide.image}
+                    alt={slide.title}
+                    className="absolute inset-0 w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-black/60" />
+                  <div className="relative z-10 text-center text-white px-4 max-w-4xl">
+                    <h1 className="text-5xl md:text-6xl font-bold mb-6">
+                      {slide.title}
+                    </h1>
+                    <p className="text-xl md:text-2xl mb-8">
+                      {slide.subtitle}
+                    </p>
+                    <Link
+                      to="/menu"
+                      className="inline-flex items-center gap-2 bg-white text-black hover:bg-gray-100 px-8 py-3 rounded-lg transition-colors font-semibold"
+                    >
+                      {slide.buttonText} <ArrowRight className="w-5 h-5" />
+                    </Link>
+                  </div>
+                </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious className="left-4 bg-white/80 hover:bg-white" />
+          <CarouselNext className="right-4 bg-white/80 hover:bg-white" />
+        </Carousel>
       </section>
 
       {/* Promotions Section */}
